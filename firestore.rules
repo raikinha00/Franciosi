@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Usuários
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Planos (públicos - qualquer um pode ler)
+    match /plans/{planId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Disciplinas
+    match /disciplines/{disciplineId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'professor';
+    }
+
+    // Aulas/Materiais
+    match /materials/{materialId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'professor';
+    }
+
+    // Atribuições
+    match /assignments/{assignmentId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'professor';
+    }
+
+    // Fichas (documentos pedagógicos - PDFs)
+    match /fichas/{fichaId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'professor';
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.professorId;
+    }
+
+    // Mensagens entre alunos e professores
+    match /messages/{messageId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.studentId;
+    }
+
+    // Videochamadas
+    match /videoCalls/{videoCallId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'professor';
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.professorId;
+    }
+
+    // Logs e auditoria (apenas Cloud Functions podem escrever)
+    match /audit_logs/{logId} {
+      allow read: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+      allow write: if false;
+    }
+  }
+}

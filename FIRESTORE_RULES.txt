@@ -1,0 +1,67 @@
+REGRAS DO FIRESTORE PARA VIDEOCHAMADAS
+======================================
+
+Acesse: https://console.firebase.google.com
+1. Vá para Firestore Database
+2. Clique em "Rules" (Regras)
+3. Copie e cole as regras abaixo:
+
+---START RULES---
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Permitir leitura/escrita para utilizadores autenticados
+    match /users/{uid} {
+      allow read, write: if request.auth.uid == uid;
+    }
+    
+    // Permitir que professores criem, leiam, atualizem e removam videochamadas
+    // Alunos podem ler todas as videochamadas
+    match /videoCalls/{documentId} {
+      // Ler: professor pode ler as suas próprias, alunos podem ler todas
+      allow read: if request.auth != null;
+      
+      // Criar: apenas professor autenticado pode criar
+      allow create: if request.auth != null && 
+                       request.resource.data.professorId == request.auth.uid;
+      
+      // Atualizar: apenas o proprietário pode atualizar
+      allow update: if request.auth.uid == resource.data.professorId;
+      
+      // Deletar: apenas o proprietário pode deletar
+      allow delete: if request.auth.uid == resource.data.professorId;
+    }
+    
+    // Permitir classes (se existirem)
+    match /classes/{documentId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+  }
+}
+
+---END RULES---
+
+Depois de copiar as regras:
+1. Clique em "Publish"
+2. Confirme as mudanças
+3. Volte ao site e tente novamente
+
+
+ALTERNATIVA (Menos Segura - Apenas para Testes):
+Se tiver pressa, pode usar estas regras mais permissivas:
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+
+⚠️ AVISO: Estas regras permissivas são apenas para DESENVOLVIMENTO/TESTES!
+Antes de ir para produção, use as regras mais específicas acima.

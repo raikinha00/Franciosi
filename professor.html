@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="PT-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Painel Professor - Metodo Franciosi</title>
+</head>
+<body>
+    <!-- Navegação -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h2><a href="index.html" style="color: white; text-decoration: none;">Metodo Franciosi</a></h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li id="professorBtn6" class="role-button role-professor" style="display: none;"><a href="professor.html">Painel Professor</a></li>
+                <li id="profileMenu6" class="profile-menu" style="display: none;">
+                    <button class="profile-button">
+                        <img id="profileAvatar6" class="profile-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='white'/%3E%3Ccircle cx='50' cy='35' r='15' fill='%23667eea'/%3E%3Cpath d='M 25 70 Q 50 60 75 70' fill='%23667eea'/%3E%3C/svg%3E" alt="Avatar">
+                        <span id="userEmail6"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">Minha Conta</a>
+                        <button id="logoutBtn6" class="dropdown-item logout-item">Logout</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Professor Dashboard -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-menu">
+                <button class="admin-menu-item active" data-tab="dashboard">📊 Dashboard</button>
+                <button class="admin-menu-item" data-tab="calendar">📆 Calendário</button>
+                <button class="admin-menu-item" data-tab="messages">💬 Mensagens</button>
+                <button class="admin-menu-item" data-tab="fichas">📋 Fichas</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Dashboard Tab -->
+            <div class="admin-tab active" id="dashboard">
+                <h1>Dashboard do Professor</h1>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <h3>Meus Alunos</h3>
+                            <p class="stat-value" id="myStudents">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <h3>Aulas Criadas</h3>
+                            <p class="stat-value" id="myClasses">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">✏️</div>
+                        <div class="stat-info">
+                            <h3>Tarefas Ativas</h3>
+                            <p class="stat-value" id="activeAssignments">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">💬</div>
+                        <div class="stat-info">
+                            <h3>Respostas Pendentes</h3>
+                            <p class="stat-value" id="pendingReplies">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <h3>Estatísticas das Aulas</h3>
+                        <div class="chart-placeholder">
+                            <p>Aulas Criadas: <span id="statsClasses">0</span></p>
+                            <p>Aulas Ativas: <span id="statsActiveClasses">0</span></p>
+                            <p>Total de Alunos: <span id="statsStudents">0</span></p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>Desempenho dos Alunos</h3>
+                        <div class="chart-placeholder">
+                            <p>Média de Notas: <span id="statsAverage">0%</span></p>
+                            <p>Alunos em Dia: <span id="statsOnTrack">0</span></p>
+                            <p>Alunos com Dificuldade: <span id="statsStruggling">0</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendário Tab -->
+            <div class="admin-tab" id="calendar">
+                <h1>Calendário de Aulas</h1>
+                
+                <!-- Header do Calendário -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+                    <span style="font-size: 1.2rem; font-weight: bold; color: #333;" id="calendarMonthYear">Janeiro 2026</span>
+                    <div style="display: flex; gap: 10px;">
+                        <button style="background: #667eea; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 1rem; transition: all 0.3s;" onclick="previousCalendarMonth()" onmouseover="this.style.background='#764ba2'" onmouseout="this.style.background='#667eea'">← Anterior</button>
+                        <button style="background: #667eea; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 1rem; transition: all 0.3s;" onclick="nextCalendarMonth()" onmouseover="this.style.background='#764ba2'" onmouseout="this.style.background='#667eea'">Próximo →</button>
+                    </div>
+                </div>
+                
+                <!-- Tabela Calendário -->
+                <div style="background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #667eea; color: white;">
+                                <th style="padding: 12px; border: 1px solid #ddd; text-align: center; font-weight: bold;">Domingo</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; text-align: center; font-weight: bold;">Segunda</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; text-align: center; font-weight: bold;">Terça</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; text-align: center; font-weight: bold;">Quarta</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; text-align: center; font-weight: bold;">Quinta</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; text-align: center; font-weight: bold;">Sexta</th>
+                                <th style="padding: 12px; border: 1px solid #ddd; text-align: center; font-weight: bold;">Sábado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendarTableBody" style="text-align: center;">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mensagens Tab -->
+            <div class="admin-tab" id="messages">
+                <h1>Mensagens dos Alunos</h1>
+                <div style="display: grid; grid-template-columns: 300px 1fr; gap: 20px; height: 600px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <!-- Lista de Mensagens -->
+                    <div style="background: #f5f5f5; border-right: 1px solid #ddd; overflow-y: auto;">
+                        <div style="padding: 15px; border-bottom: 1px solid #ddd; font-weight: bold; background: #667eea; color: white;">Mensagens Recebidas</div>
+                        <div id="messagesList" style="padding: 10px;">
+                            <p style="padding: 20px; text-align: center; color: #999;">Nenhuma mensagem</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalhe da Mensagem -->
+                    <div style="display: flex; flex-direction: column; padding: 20px; overflow-y: auto;" id="messageDetail">
+                        <p style="text-align: center; color: #999; margin-top: 100px;">Seleccione uma mensagem para responder</p>
+                    </div>
+                </div>
+
+                <!-- Modal para Responder -->
+                <div id="replyModal" class="modal-overlay" style="display: none; z-index: 10000;">
+                    <div class="confirmation-modal" style="width: 500px;">
+                        <div class="modal-header">
+                            <h2>📤 Responder ao Aluno</h2>
+                            <button class="close-modal-btn" onclick="closeReplyModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">✍️ Sua Resposta:</label>
+                                <textarea id="replyTextModal" placeholder="Digite sua resposta..." style="width: 100%; min-height: 100px; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.95em; resize: vertical; transition: border-color 0.3s;" onmouseover="this.style.borderColor='#667eea'" onmouseout="this.style.borderColor='#e0e0e0'"></textarea>
+                            </div>
+                            
+                            <div style="margin-bottom: 15px;">
+                                <label style="display: block; margin-bottom: 6px; font-weight: 500; color: #555; font-size: 0.9em;">📎 Anexar imagem (opcional)</label>
+                                <input type="file" id="replyImageModal" accept="image/*" style="width: 100%; padding: 8px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 0.85em; cursor: pointer; transition: border-color 0.3s;" onmouseover="this.style.borderColor='#4CAF50'" onmouseout="this.style.borderColor='#e0e0e0'" />
+                                <div id="replyImagePreviewModal" style="margin-top: 8px; text-align: center;"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-secondary" onclick="closeReplyModal()">Cancelar</button>
+                            <button type="button" class="btn-primary" onclick="sendReplyFromModal()">📤 Enviar Resposta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fichas Tab -->
+            <div class="admin-tab" id="fichas">
+                <h1>📋 Fichas</h1>
+                
+                <div style="background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                        <h2 style="color: #333;">Gestão de Fichas</h2>
+                        <button onclick="openCreateFichaModal()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1em; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            ➕ Adicionar Ficha
+                        </button>
+                    </div>
+                    
+                    <div id="fichasContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px;">
+                        <div style="text-align: center; padding: 40px; grid-column: 1/-1;">
+                            <p style="color: #999; font-size: 1.1rem;">Nenhuma ficha criada ainda</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal - Criar/Editar Ficha -->
+    <div id="fichaModal" class="modal-overlay" style="display: none; z-index: 10000;">
+        <div class="confirmation-modal" style="width: 600px;">
+            <div class="modal-header">
+                <h2 id="fichaModalTitle">Adicionar Ficha</h2>
+                <button class="close-modal-btn" onclick="closeFichaModal()">&times;</button>
+            </div>
+            <form id="fichaForm" onsubmit="saveFicha(event)">
+                <div class="modal-body">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Título da Ficha:</label>
+                        <input type="text" id="fichaTitle" placeholder="Ex: Ficha de Física - Velocidade" required style="width: 100%; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 6px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.95em; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Descrição:</label>
+                        <textarea id="fichaDescription" placeholder="Descrição da ficha..." style="width: 100%; min-height: 100px; padding: 10px 15px; border: 2px solid #e0e0e0; border-radius: 6px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.95em; resize: vertical; box-sizing: border-box;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Ficheiro (PDF):</label>
+                        <input type="file" id="fichaFile" accept=".pdf" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 6px; cursor: pointer;">
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Plano Disponível:</label>
+                        <select id="fichaAccessLevel" style="width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 6px;">
+                            <option value="">Carregando planos...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeFichaModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">Guardar Ficha</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Eliminação -->
+    <div id="deleteConfirmModal" class="modal-overlay" style="display: none; z-index: 99999;">
+        <div class="confirmation-modal">
+            <div class="modal-header">
+                <h2>⚠️ Confirmar Eliminação</h2>
+                <button class="close-modal-btn" onclick="closeDeleteConfirmModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteConfirmMessage">Tem a certeza que deseja eliminar este item?</p>
+                <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Esta ação não pode ser desfeita.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeDeleteConfirmModal()">Cancelar</button>
+                <button type="button" class="btn-delete" onclick="confirmDelete()">Sim, Eliminar</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal - Agendar Videochamada -->
+    <div id="videoCallModal" class="modal-overlay" style="display: none;">
+        <div class="confirmation-modal">
+            <div class="modal-header">
+                <h2>Agendar Videochamada</h2>
+                <button class="close-modal-btn" onclick="closeVideoCallModal()">&times;</button>
+            </div>
+            <form id="videoCallForm" onsubmit="saveVideoCall(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Título da Aula:</label>
+                        <input type="text" id="videoCallTitle" placeholder="Ex: Física 10º - Velocidade" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Aula:</label>
+                        <select id="videoCallPlan" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95em;">
+                            <option value="">Selecionar Plano...</option>
+                        </select>
+                        <small style="color: #666; display: block; margin-top: 5px;">Apenas alunos com este plano verão a aula</small>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Data:</label>
+                            <input type="date" id="videoCallDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora:</label>
+                            <input type="time" id="videoCallTime" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Duração (em minutos):</label>
+                        <input type="number" id="videoCallDuration" value="60" min="15" max="480" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Link da Reunião (Meet/Zoom):</label>
+                        <input type="url" id="videoCallLink" placeholder="https://..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <textarea id="videoCallDescription" placeholder="Descrição ou tópicos a cobrir..." style="min-height: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 6px;"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeVideoCallModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Agendar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Metodo Franciosi. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script src="script.js" type="module"></script>
+</body>
+</html>

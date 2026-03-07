@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="PT-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Minhas Aulas - Metodo Franciosi</title>
+</head>
+<body>
+    <!-- Navegação -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h2><a href="index.html" style="color: white; text-decoration: none;">Metodo Franciosi</a></h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li id="alunoBtn7" class="role-button role-aluno" style="display: none;"><a href="my-classes.html">Minhas Aulas</a></li>
+                <li id="profileMenu7" class="profile-menu" style="display: none;">
+                    <button class="profile-button">
+                        <img id="profileAvatar7" class="profile-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='white'/%3E%3Ccircle cx='50' cy='35' r='15' fill='%23667eea'/%3E%3Cpath d='M 25 70 Q 50 60 75 70' fill='%23667eea'/%3E%3C/svg%3E" alt="Avatar">
+                        <span id="userEmail7"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">Minha Conta</a>
+                        <button id="logoutBtn7" class="dropdown-item logout-item">Logout</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Student Dashboard -->
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-menu">
+                <button class="admin-menu-item active" data-tab="dashboard">📊 Dashboard</button>
+                <button class="admin-menu-item" data-tab="calendar">📆 Calendário</button>
+                <button class="admin-menu-item" data-tab="videoaulas">📹 Vídeo Aulas</button>
+                <button class="admin-menu-item" data-tab="fichas">📋 Fichas</button>
+                <button class="admin-menu-item" data-tab="messages">💬 Mensagens</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            <!-- Dashboard Tab -->
+            <div class="admin-tab active" id="dashboard">
+                <h1>Dashboard - Minhas Aulas</h1>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📚</div>
+                        <div class="stat-info">
+                            <h3>Aulas Inscritas</h3>
+                            <p class="stat-value" id="enrolledClasses">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">✏️</div>
+                        <div class="stat-info">
+                            <h3>Tarefas Pendentes</h3>
+                            <p class="stat-value" id="pendingAssignments">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🎥</div>
+                        <div class="stat-info">
+                            <h3>Video chamadas</h3>
+                            <p class="stat-value" id="scheduledCalls">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">📹</div>
+                        <div class="stat-info">
+                            <h3>Vídeos Disponíveis</h3>
+                            <p class="stat-value" id="availableVideos">—</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <h3>Resumo das Aulas</h3>
+                        <div class="chart-placeholder">
+                            <p>Aulas Inscritas: <span id="statsEnrolled">0</span></p>
+                            <p>Aulas em Progresso: <span id="statsInProgress">0</span></p>
+                            <p>Aulas Completas: <span id="statsCompleted">0</span></p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>Atividade Recente</h3>
+                        <div class="chart-placeholder">
+                            <p>Tarefas Entregues: <span id="statsSubmitted">0</span></p>
+                            <p>Tarefas Pendentes: <span id="statsPending">0</span></p>
+                            <p>Taxa de Conclusão: <span id="statsCompletion">0%</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendário Tab -->
+            <div class="admin-tab" id="calendar">
+                <h1>📆 Calendário de Aulas</h1>
+                
+                <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <span style="font-size: 1.2rem; font-weight: bold; color: #333;" id="studentCalendarMonthYear">Janeiro 2026</span>
+                        <div>
+                            <button style="background: #667eea; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 1rem; transition: all 0.3s; margin-right: 10px;" onclick="previousStudentCalendarMonth()" onmouseover="this.style.background='#764ba2'" onmouseout="this.style.background='#667eea'">← Anterior</button>
+                            <button style="background: #667eea; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 1rem; transition: all 0.3s;" onclick="nextStudentCalendarMonth()" onmouseover="this.style.background='#764ba2'" onmouseout="this.style.background='#667eea'">Próximo →</button>
+                        </div>
+                    </div>
+                    
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #667eea; color: white;">
+                                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Domingo</th>
+                                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Segunda</th>
+                                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Terça</th>
+                                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Quarta</th>
+                                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Quinta</th>
+                                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Sexta</th>
+                                <th style="padding: 12px; text-align: center; border: 1px solid #ddd;">Sábado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentCalendarTableBody" style="text-align: center;">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 20px; color: #999;">Carregando calendário...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Vídeo Aulas Tab -->
+            <div class="admin-tab" id="videoaulas">
+                <h1>📹 Vídeo Aulas</h1>
+                
+                <div style="background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div id="videoAulasContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 400px)); gap: 20px; justify-content: center;">
+                        <div style="text-align: center; padding: 40px; grid-column: 1/-1;">
+                            <p style="color: #999; font-size: 1.1rem;">Carregando disciplinas...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fichas Tab -->
+            <div class="admin-tab" id="fichas">
+                <h1>📋 Fichas</h1>
+                
+                <div style="background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div id="studentFichasContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                        <div style="text-align: center; padding: 40px; grid-column: 1/-1;">
+                            <p style="color: #999; font-size: 1.1rem;">Carregando fichas...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div class="admin-tab" id="messages">
+                <h1>💬 Mensagens com Professor</h1>
+                
+                <div style="display: grid; grid-template-columns: 300px 1fr; gap: 20px; height: 650px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <!-- Lista de Mensagens -->
+                    <div style="background: #f5f5f5; border-right: 1px solid #ddd; overflow-y: auto;">
+                        <div style="padding: 15px; border-bottom: 1px solid #ddd; font-weight: bold; background: #667eea; color: white;">Minhas Mensagens</div>
+                        <div id="studentMessagesList" style="padding: 10px;">
+                            <p style="padding: 20px; text-align: center; color: #999;">Nenhuma mensagem</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalhe da Mensagem -->
+                    <div style="display: flex; flex-direction: column; padding: 20px; overflow-y: auto;" id="studentMessageDetail">
+                        <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                            <div style="text-align: center;">
+                                <p style="color: #999; margin-bottom: 20px;">Seleccione uma mensagem para visualizar</p>
+                                <button onclick="openSendMessageModal()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1em; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    ✉️ Enviar Nova Mensagem
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Envio de Mensagens -->
+            <div id="sendMessageModal" class="modal-overlay" style="display: none; z-index: 99999;">
+                <div class="confirmation-modal" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h2>✉️ Enviar Mensagem ao Professor</h2>
+                        <button class="close-modal-btn" onclick="closeSendMessageModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">Sua Mensagem:</label>
+                            <textarea id="modalMessageText" placeholder="Digite sua dúvida ou pergunta..." style="width: 100%; min-height: 120px; padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.95em; resize: vertical; box-sizing: border-box;"></textarea>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label for="modalMessageImage" style="display: block; font-size: 0.9em; color: #667; margin-bottom: 8px; font-weight: 500;">📎 Anexar imagem (opcional)</label>
+                            <input type="file" id="modalMessageImage" accept="image/*" style="width: 100%; padding: 8px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 0.9em; cursor: pointer;" />
+                        </div>
+                        
+                        <div id="modalImagePreview" style="margin-bottom: 15px; text-align: center;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeSendMessageModal()">Cancelar</button>
+                        <button type="button" class="btn-primary" onclick="sendMessageFromModal()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">📤 Enviar Mensagem</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Acesso Restrito (Plano Gratuito) -->
+            <div id="restrictedAccessModal" class="modal-overlay" style="display: none; z-index: 99999;">
+                <div class="confirmation-modal" style="max-width: 500px;">
+                    <div class="modal-header">
+                        <h2>🔒 Funcionalidade Restrita</h2>
+                        <button class="close-modal-btn" onclick="closeRestrictedAccessModal()">&times;</button>
+                    </div>
+                    <div class="modal-body" style="text-align: center;">
+                        <div style="margin: 30px 0;">
+                            <p style="font-size: 1.2rem; color: #333; margin-bottom: 15px;">
+                                Esta funcionalidade não está disponível no plano gratuito.
+                            </p>
+                            <p style="font-size: 1rem; color: #666; margin-bottom: 20px;">
+                                Faça upgrade para aceder ao calendário e mensagens com o professor.
+                            </p>
+                            <div style="background: #f0f4ff; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea;">
+                                <p style="color: #667eea; font-weight: bold; margin-bottom: 10px;">✨ Desbloqueie com upgrade:</p>
+                                <ul style="text-align: left; display: inline-block; color: #666;">
+                                    <li style="margin-bottom: 8px;">📆 Acesso ao calendário de aulas</li>
+                                    <li style="margin-bottom: 8px;">💬 Mensagens com o professor</li>
+                                    <li>🎁 E muito mais!</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeRestrictedAccessModal()">Fechar</button>
+                        <button type="button" class="btn-primary" onclick="redirectToPricing()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">💳 Ver Planos de Upgrade</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Metodo Franciosi. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script src="script.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="PT-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Minha Conta - Metodo Franciosi</title>
+</head>
+<body>
+    <!-- Navegação -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h2><a href="index.html" style="color: white; text-decoration: none;">Metodo Franciosi</a></h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="index.html#about">Sobre</a></li>
+                <li><a href="index.html#disciplines">Disciplinas</a></li>
+                <li><a href="index.html#pricing">Planos de Aulas</a></li>
+                <li id="alunoBtn3" class="role-button role-aluno" style="display: none;"><a href="my-classes.html">Minhas Aulas</a></li>
+                <li id="professorBtn3" class="role-button role-professor" style="display: none;"><a href="professor.html">Painel Professor</a></li>
+                <li id="adminBtn3" class="role-button role-admin" style="display: none;"><a href="admin.html">Painel Admin</a></li>
+                <li id="profileMenu3" class="profile-menu" style="display: none;">
+                    <button class="profile-button">
+                        <img id="profileAvatar3" class="profile-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='white'/%3E%3Ccircle cx='50' cy='35' r='15' fill='%23667eea'/%3E%3Cpath d='M 25 70 Q 50 60 75 70' fill='%23667eea'/%3E%3C/svg%3E" alt="Avatar">
+                        <span id="userEmail3"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">Minha Conta</a>
+                        <button id="logoutBtn3" class="dropdown-item logout-item">Logout</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-container">
+                <!-- Sidebar -->
+                <aside class="profile-sidebar">
+                    <div class="profile-avatar">
+                        <div class="avatar-container">
+                            <img id="avatarImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 150'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='75' cy='75' r='75' fill='url(%23grad)'/%3E%3Ccircle cx='75' cy='50' r='25' fill='white'/%3E%3Cpath d='M 30 120 Q 75 100 120 120' fill='white'/%3E%3C/svg%3E" alt="Avatar" class="avatar-img">
+                        </div>
+                        <button class="avatar-edit-btn" id="editAvatarBtn">✏️</button>
+                    </div>
+
+                    <!-- Modal de edição de avatar -->
+                    <div id="avatarModal" class="modal" style="display: none;">
+                        <div class="modal-content">
+                            <span class="close-modal">&times;</span>
+                            <h3>Editar Avatar</h3>
+                            
+                            <div class="avatar-url-section">
+                                <label for="avatarUrl">Cola o link da imagem:</label>
+                                <input type="text" id="avatarUrl" placeholder="https://exemplo.com/imagem.jpg" class="modal-input">
+                                <button class="modal-btn" id="urlBtn">Confirmar</button>
+                                <button class="modal-btn btn-cancel" id="closeModalBtn">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-menu-items">
+                        <button class="menu-item active" data-tab="dados">Dados Pessoais</button>
+                        <button class="menu-item" data-tab="subscriao">Subscrição</button>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="profile-content">
+                    <!-- Dados Pessoais Tab -->
+                    <div class="tab-content active" id="dados">
+                        <h2>Dados Pessoais</h2>
+                        
+                        <div class="info-group">
+                            <label>Nome Completo</label>
+                            <input type="text" id="fullNameInput" placeholder="Nome completo" readonly>
+                            <button class="edit-btn" onclick="toggleEditMode('fullName')">Editar</button>
+                        </div>
+
+                        <div class="info-group">
+                            <label>Email</label>
+                            <input type="email" id="emailInput" placeholder="Email" readonly>
+                        </div>
+
+                        <div class="info-group">
+                            <label>Data de Registo</label>
+                            <input type="text" id="createdAtInput" placeholder="Data de registo" readonly>
+                        </div>
+
+                        <div class="info-group">
+                            <label>Cargo</label>
+                            <input type="text" id="roleInput" placeholder="Cargo" readonly>
+                        </div>
+
+                        <div id="profileError" class="error-message"></div>
+                        <button id="saveProfileBtn" class="btn-primary" style="display: none;">Guardar Alterações</button>
+                    </div>
+
+                    <!-- Subscrição Tab -->
+                    <div class="tab-content" id="subscriao">
+                        <h2>Subscrição</h2>
+
+                        <div class="subscription-info">
+                            <div class="info-group">
+                                <label>Plano Atual</label>
+                                <input type="text" id="currentPlan" placeholder="Nenhum plano selecionado" readonly>
+                            </div>
+
+                            <div class="info-group">
+                                <label>Valor Mensal</label>
+                                <input type="text" id="subscriptionPrice" placeholder="—" readonly>
+                            </div>
+
+                            <div class="info-group">
+                                <label>Data de Renovação</label>
+                                <input type="text" id="renewalDate" placeholder="—" readonly>
+                            </div>
+
+                            <div class="subscription-actions">
+                                <a href="pricing.html" class="btn-primary">Atualizar Plano</a>
+                                <button id="cancelPlanBtn" class="btn-delete" onclick="openCancelPlanModal()" style="display: none;">Cancelar Plano</button>
+                            </div>
+                        </div>
+
+                        <!-- Modal de Cancelamento de Plano -->
+                        <div id="cancelPlanModal" class="modal-overlay" style="display: none;">
+                            <div class="confirmation-modal">
+                                <div class="modal-header">
+                                    <h2>⚠️ Cancelar Plano</h2>
+                                    <button class="close-modal-btn" onclick="closeCancelPlanModal()">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Tem a certeza que deseja cancelar a sua subscrição?</p>
+                                    <p style="color: #666; font-size: 0.9em; margin-top: 10px;">Após o cancelamento, perderá acesso às aulas premium no final do período de faturação.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn-secondary" onclick="closeCancelPlanModal()">Não, Manter Plano</button>
+                                    <button type="button" class="btn-delete" onclick="confirmCancelPlan()">Sim, Cancelar Plano</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Metodo Franciosi. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js" type="module"></script>
+</body>
+</html>

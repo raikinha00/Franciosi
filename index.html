@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="PT-pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Metodo Franciosi - Aulas Online</title>
+</head>
+
+<body>
+
+    <!-- Navegação -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h2>Metodo Franciosi</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#disciplines">Disciplinas</a></li>
+                <li><a href="#pricing">Planos de Aulas</a></li>
+                <li id="alunoBtn" class="role-button role-aluno" style="display: none;"><a href="my-classes.html">Minhas Aulas</a></li>
+                <li id="professorBtn" class="role-button role-professor" style="display: none;"><a href="professor.html">Painel Professor</a></li>
+                <li id="adminBtn" class="role-button role-admin" style="display: none;"><a href="admin.html">Painel Admin</a></li>
+                <li id="authLink"><a href="login.html" class="login-button">Registo</a></li>
+                <li id="profileMenu" class="profile-menu" style="display: none;">
+                    <button class="profile-button">
+                        <img id="profileAvatar" class="profile-avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='white'/%3E%3Ccircle cx='50' cy='35' r='15' fill='%23667eea'/%3E%3Cpath d='M 25 70 Q 50 60 75 70' fill='%23667eea'/%3E%3C/svg%3E" alt="Avatar">
+                        <span id="userEmail"></span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="profile.html" class="dropdown-item">Minha Conta</a>
+                        <button id="logoutBtn" class="dropdown-item logout-item">Logout</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Bem-vindo ao Método Franciosi</h1>
+            <p>Aulas online personalizadas em Física, Química</p>
+            <a href="#pricing" class="cta-button">Comece Agora</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>Aqui vai ser um video</h2>
+            <p>
+                Aqui vai ser um video ...
+            </p>
+        </div>
+    </section>
+
+    <!-- Disciplines Section -->
+    <section id="disciplines" class="disciplines">
+        <div class="container">
+            <h2>Especialidades</h2>
+            <div class="disciplines-grid">
+                <div class="discipline-card">
+                    <h3>Física e Química A</h3>
+                    <p>10º e 11º anos</p>
+                    <ul>
+                        <li>Movimentos e Forças</li>
+                        <li>Energia</li>
+                        <li>Reações Químicas</li>
+                        <li>Estrutura Atómica</li>
+                    </ul>
+                </div>
+                <div class="discipline-card coming-soon">
+                    <div class="coming-soon-badge">🔜 Em Breve</div>
+                    <h3>Biologia e Geologia</h3>
+                    <p>10º e 11º anos</p>
+                    <ul>
+                        <li>Evolução e Biodiversidade</li>
+                        <li>Ecologia</li>
+                        <li>Dinâmica Terrestre</li>
+                        <li>Paisagens Naturais</li>
+                    </ul>
+                    <p class="coming-soon-text">Esta disciplina estará disponível em breve. Subscreve para receber notificações!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2>Por que escolher as nossas aulas?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <h4>📱 Online Flexível</h4>
+                    <p>Aulas adaptadas ao seu horário, no conforto da sua casa</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>👨‍🏫 Ensino Personalizado</h4>
+                    <p>Metodologia adaptada ao seu ritmo e dificuldades</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>📚 Conteúdo Completo</h4>
+                    <p>Abrangência total dos programas de 10º e 11º anos</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>✅ Resultados Garantidos</h4>
+                    <p>Foco em compreensão profunda e melhoria de desempenho</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="contact">
+        <div class="container">
+            <h2>Planos de Aulas</h2>
+            <p>Conheça os nossos planos de aulas e escolha o que melhor se adequa a si!</p>
+            <a href="pricing.html" class="cta-button">Ver Planos de Preços</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Metodo Franciosi. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script src="script.js" type="module"></script>
+</body>
+</html>
