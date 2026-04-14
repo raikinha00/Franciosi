@@ -685,7 +685,7 @@ if (registerForm) {
             
             // Redirecionar após 1 segundo
             setTimeout(() => {
-                window.location.href = redirectUrl;
+                window.location.href = "index.html";
             }, 1000);
             
         } catch (error) {
@@ -767,7 +767,7 @@ if (loginForm) {
             
             // Redirecionar após 1 segundo
             setTimeout(() => {
-                window.location.href = redirectUrl;
+                window.location.href = "index.html";
             }, 1000);
             
         } catch (error) {
