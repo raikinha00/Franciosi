@@ -12,7 +12,10 @@ export const STRIPE_CONFIG = {
         'Física A 11º': 'price_1SsUslIMHAeiLXOxzbBjkitT'
     },
     
-    // URL da Cloud Function para criar sessão de checkout
+    // Price ID para video chamadas (pagamento único €15)
+    videoCallPriceId: 'price_1TK2XmIMHAeiLXOxFWKkSSkJ',
+    
+    // URLs das Cloud Functions
     checkoutSessionUrl: 'https://us-central1-site-franciosi-1dcd3.cloudfunctions.net/createCheckoutSession'
 };
 

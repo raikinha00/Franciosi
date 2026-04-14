@@ -3615,14 +3615,12 @@ function initializeCalendar() {
 // Abrir modal de videochamada
 function openVideoCallModal() {
     document.getElementById('videoCallModal').style.display = 'flex';
-    loadClassesForVideoCall();
 }
 
 // Abrir modal com data preenchida ao clicar no calendário
 function openVideoCallModalWithDate(dateStr) {
     document.getElementById('videoCallModal').style.display = 'flex';
     document.getElementById('videoCallDate').value = dateStr;
-    loadPlansForVideoCall();
 }
 
 // Fechar modal de videochamada
@@ -3631,7 +3629,8 @@ function closeVideoCallModal() {
     document.getElementById('videoCallForm').reset();
 }
 
-// Carregar planos para o select
+// Função não mais necessária (anteriormente carregava planos para o select)
+/*
 async function loadPlansForVideoCall() {
     const select = document.getElementById('videoCallPlan');
     if (!select) return;
@@ -3667,40 +3666,32 @@ async function loadPlansForVideoCall() {
 function loadClassesForVideoCall() {
     loadPlansForVideoCall();
 }
+*/
 
 // Guardar videochamada
 function saveVideoCall(event) {
     event.preventDefault();
     
-    const planSelect = document.getElementById('videoCallPlan');
-    const selectedPlan = planSelect.value;
-    const selectedOption = planSelect.options[planSelect.selectedIndex];
-    const selectedPlanName = selectedOption.getAttribute('data-name') || selectedOption.text;
-    
-    if (!selectedPlan) {
-        alert('Por favor, selecione um tipo de aula');
-        return;
-    }
-    
     const videoCall = {
         id: Date.now().toString(),
         title: document.getElementById('videoCallTitle').value,
-        className: selectedPlanName,
-        classId: selectedPlan,
-        subscriptionPlan: selectedPlanName, // Guardar o NOME do plano, não o ID
+        className: 'Todos os Planos', // Disponível para todos
+        classId: 'all',
+        subscriptionPlan: 'all', // Marcar como "para todos"
         date: document.getElementById('videoCallDate').value,
         time: document.getElementById('videoCallTime').value,
         duration: document.getElementById('videoCallDuration').value,
         link: document.getElementById('videoCallLink').value,
         description: document.getElementById('videoCallDescription').value,
-        status: 'agendada'
+        status: 'agendada',
+        isPaid: true, // Flag para controlar se precisa pagamento - €15
+        priceId: 'price_1TK2XmIMHAeiLXOxFWKkSSkJ' // Product ID do Stripe
     };
     
     console.log('Salvando videochamada:', {
         titulo: videoCall.title,
-        planoId: selectedPlan,
-        planoNome: selectedPlanName,
-        subscriptionPlan: videoCall.subscriptionPlan
+        subscriptionPlan: videoCall.subscriptionPlan,
+        isPaid: videoCall.isPaid
     }); // DEBUG
     
     videoCalls.push(videoCall);
@@ -3714,13 +3705,13 @@ function saveVideoCall(event) {
             createdAt: new Date(),
             updatedAt: new Date()
         }).then(() => {
-            console.log('Videochamada guardada com sucesso:', videoCall.subscriptionPlan); // DEBUG
+            console.log('Videochamada guardada com sucesso'); // DEBUG
             renderVideoCallsTable();
             if (document.getElementById('calendarTableBody')) {
                 renderCalendarModal(currentCalendarDate);
             }
             closeVideoCallModal();
-            showToast('✓ Videochamada agendada com sucesso!', 'success');
+            showToast('✓ Videochamada agendada com sucesso! Disponível para todos os alunos.', 'success');
         }).catch(err => {
             console.error('Erro ao guardar videochamada:', err);
             showToast('❌ Erro ao agendar videochamada: ' + err.message, 'error');
@@ -4340,22 +4331,9 @@ async function loadStudentVideoCalls() {
     }
     
     try {
-        // Buscar o plano de subscrição do aluno
-        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-        const userPlan = userDoc.exists() ? userDoc.data().subscriptionPlan : null;
-        
-        
-        // Carregar apenas videochamadas do plano do aluno
-        let querySnapshot;
-        if (userPlan) {
-            const q = query(collection(db, 'videoCalls'), where('subscriptionPlan', '==', userPlan));
-            querySnapshot = await getDocs(q);
-        } else {
-            // Se não tem plano, carregar todas (compatibilidade com videochamadas antigas)
-            const q = query(collection(db, 'videoCalls'));
-            querySnapshot = await getDocs(q);
-        }
-        
+        // Carregar TODAS as videochamadas (agora são para todos os alunos)
+        const q = query(collection(db, 'videoCalls'));
+        const querySnapshot = await getDocs(q);
         
         studentVideoCalls = [];
         querySnapshot.forEach((doc) => {
@@ -4537,22 +4515,29 @@ window.showStudentVideoCallDetails = function(id) {
     
     const callDate = new Date(call.date).toLocaleDateString('pt-PT');
     
+    // Criar o HTML do conteúdo
+    let buttonsHTML = `<button id="closeDetailsBtn" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem;">Fechar</button>`;
+    
+    // Mostrar botão de pagamento em vez do link (mostrar sempre)
+    const requiresPayment = call.isPaid !== false; // true se isPaid é true ou undefined
+    if (requiresPayment) {
+        buttonsHTML += `<button id="paymentBtn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: bold;">💳 Pagar €15 para Participar</button>`;
+    }
+    
     content.innerHTML = `
         <h2 style="margin-top: 0; color: #333;">${call.title || call.className}</h2>
         
         <div style="background: #f5f5f5; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
-            <p style="margin: 8px 0;"><strong>📚 Tipo de Plano:</strong> <span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.9em;">${call.subscriptionPlan || call.className}</span></p>
+            <p style="margin: 8px 0;"><strong>📚 Tipo:</strong> <span style="background: #667eea; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.9em;">Aula Online</span></p>
             <p style="margin: 8px 0;"><strong>📅 Data:</strong> ${callDate}</p>
             <p style="margin: 8px 0;"><strong>⏰ Hora:</strong> ${call.time}</p>
             <p style="margin: 8px 0;"><strong>⏱️ Duração:</strong> ${call.duration} minutos</p>
-            ${call.link ? `<p style="margin: 8px 0;"><strong>🔗 Link:</strong> <a href="${call.link}" target="_blank" style="color: #667eea;">${call.link}</a></p>` : ''}
             ${call.description ? `<p style="margin: 8px 0;"><strong>📝 Descrição:</strong> ${call.description}</p>` : ''}
             <p style="margin: 8px 0;"><strong>Status:</strong> <span style="background: #4CAF50; color: white; padding: 2px 8px; border-radius: 4px;">${call.status}</span></p>
         </div>
         
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
-            <button id="closeDetailsBtn" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem;">Fechar</button>
-            <a href="${call.link}" target="_blank" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 1rem; text-decoration: none; display: inline-block;">Abrir Reunião</a>
+            ${buttonsHTML}
         </div>
     `;
     
@@ -4564,6 +4549,54 @@ window.showStudentVideoCallDetails = function(id) {
         modal.remove();
     });
     
+    // Pagamento ao clicar no botão Pagar
+    const paymentBtn = content.querySelector('#paymentBtn');
+    if (paymentBtn) {
+        paymentBtn.addEventListener('click', async function() {
+            try {
+                const user = auth.currentUser;
+                if (!user) {
+                    showToast('❌ Por favor, faça login primeiro', 'error');
+                    return;
+                }
+                
+                // Usar a função de checkout para video chamadas
+                const response = await fetch('https://us-central1-site-franciosi-1dcd3.cloudfunctions.net/createVideoCallCheckoutSession', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: STRIPE_CONFIG.videoCallPriceId,
+                        videoCallId: call.id,
+                        userId: user.uid,
+                        email: user.email
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erro ao criar sessão de checkout');
+                }
+                
+                const data = await response.json();
+                
+                // Redirecionar para o Stripe Checkout
+                if (data.sessionId) {
+                    const stripe = Stripe(STRIPE_CONFIG.publishableKey);
+                    await stripe.redirectToCheckout({ sessionId: data.sessionId });
+                } else if (data.error) {
+                    showToast('❌ Erro: ' + data.error, 'error');
+                } else {
+                    showToast('❌ Erro ao processar pagamento', 'error');
+                }
+            } catch (error) {
+                console.error('Erro ao processar pagamento:', error);
+                showToast('❌ Erro ao processar pagamento: ' + error.message, 'error');
+            }
+            modal.remove();
+        });
+    }
+    
     // Fechar ao clicar fora
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
@@ -4573,6 +4606,43 @@ window.showStudentVideoCallDetails = function(id) {
     
     document.body.appendChild(modal);
 };
+
+// Função para redirecionar para o Stripe Checkout
+async function redirectToStripeCheckout(priceId, videoCallId) {
+    try {
+        const user = auth.currentUser;
+        if (!user) {
+            showToast('❌ Por favor, faça login primeiro', 'error');
+            return;
+        }
+        
+        // Criar uma sessão de Stripe Checkout
+        const response = await fetch('https://us-central1-site-franciosi.cloudfunctions.net/createVideoCallCheckoutSession', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                priceId: priceId,
+                videoCallId: videoCallId,
+                userId: user.uid,
+                email: user.email
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.url) {
+            // Redirecionar para Stripe
+            window.location.href = data.url;
+        } else {
+            showToast('❌ Erro ao processar pagamento: ' + (data.error || 'Erro desconhecido'), 'error');
+        }
+    } catch (error) {
+        console.error('Erro ao redirecionar para Stripe:', error);
+        showToast('❌ Erro ao processar pagamento', 'error');
+    }
+}
 
 // ========== FUNÇÕES PARA VÍDEO AULAS ==========
 
